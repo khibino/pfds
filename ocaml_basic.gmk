@@ -1,0 +1,77 @@
+## -*- Makefile -*-
+##
+##
+
+stdlib_interfaces = \
+	bigarray \
+	num \
+	str \
+	unix \
+
+stdlib_archives = \
+	bigarray \
+	nums \
+	str \
+	unix \
+##	camlp4
+
+ocaml_load_path = $(shell for l in $(stdlib_interfaces); do ocamlfind query $$l ; done | sort -u | sed 's/^/-I /') -I $(shell ocamlfind query camlp4)
+ocaml_extra_load_path = 
+
+ocamlyacc = ocamlyacc
+ocamllex = ocamllex
+ocamldep = ocamldep
+
+ocamlc_debug = -g
+#ocaml_warning = -w A
+ocamlc_opt = $(ocaml_warning) $(ocamlc_debug)
+ocamlc = ocamlc.opt
+
+byte_stdlibs = $(stdlib_archives:=.cma)
+BYTE_COMPILE.ml = $(ocamlc) $(ocamlc_opt) $(ocaml_load_path) $(ocaml_extra_load_path) -c
+BYTE_LINK.ml = $(ocamlc) $(ocamlc_opt) $(ocaml_load_path) $(ocaml_extra_load_path) $(ocaml_ldflags)
+BYTE_LINK.cmo = $(ocamlc) $(ocamlc_opt) $(ocaml_load_path) $(ocaml_extra_load_path) $(ocaml_ldflags)
+
+INTERFACE.ml = $(ocamlc) $(ocamlc_opt) $(ocaml_load_path) $(ocaml_extra_load_path) -i
+
+
+ocamlopt_opt = $(ocaml_warning)
+ocamlopt = ocamlopt.opt
+
+nat_stdlibs = $(stdlib_archives:=.cmxa)
+NAT_COMPILE.ml = $(ocamlopt) $(ocamlopt_opt) $(ocaml_load_path) $(ocaml_extra_load_path) -c
+NAT_LINK.ml = $(ocamlopt) $(ocamlopt_opt) $(ocaml_load_path) $(ocaml_extra_load_path) $(ocaml_ldflags)
+NAT_LINK.cmx = $(ocamlopt) $(ocamlopt_opt) $(ocaml_load_path) $(ocaml_extra_load_path) $(ocaml_ldflags)
+
+
+%.ml %.mli: %.mly
+	$(ocamlyacc) $<
+
+%.ml: %.mll
+	$(ocamllex) $<
+
+%.cmi: %.mli
+	./compile-may-pack.sh "$(BYTE_COMPILE.ml)" $< $@
+#	$(BYTE_COMPILE.ml) $<
+
+%.cmo %.cmi: %.ml
+	./compile-may-pack.sh "$(BYTE_COMPILE.ml)" $< $@
+#	$(BYTE_COMPILE.ml) $< -o $@
+
+%.cmx %.o %.cmi: %.ml
+	./compile-may-pack.sh "$(NAT_COMPILE.ml)" $< $@
+#	$(NAT_COMPILE.ml) $< -o $@
+
+%.auto.mli: %.ml
+	$(INTERFACE.ml) $< > $@
+
+# info:
+# 	@echo "byte_stdlibs = $(byte_stdlibs)"
+# 	@echo "nat_stdlibs  = $(nat_stdlibs)"
+
+# obj-clean:
+# 	$(RM) *.cmi *.cmo *.cmx *.o
+
+##
+## end
+##

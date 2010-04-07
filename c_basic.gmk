@@ -1,0 +1,11 @@
+## -*- Makefile -*-
+##
+##
+
+PIC_CFLAG = -fPIC
+COMPILE.pic.c = $(CC) $(CFLAGS) $(PIC_CFLAG) $(CPPFLAGS) $(TARGET_ARCH) -c
+
+LINK.oo = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
+
+%.pic.o: %.c
+	$(COMPILE.pic.c) $< $(OUTPUT_OPTION)
