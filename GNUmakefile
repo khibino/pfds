@@ -28,10 +28,10 @@ pSet.cmo: pSet/type.cmi pSet/unbalanced.cmo pSet/redBlack.cmo
 pSet.cmx: pSet/type.cmi pSet/unbalanced.cmx pSet/redBlack.cmx
 	$(ocamlopt) -pack $^ -o $@
 
-pHeap.cmo: pHeap/type.cmi pHeap/leftist.cmo
+pHeap.cmo: pHeap/type.cmi pHeap/leftist.cmo pHeap/binomial.cmo
 	$(ocamlc) -pack $^ -o $@
 
-pHeap.cmx: pHeap/type.cmi pHeap/leftist.cmx
+pHeap.cmx: pHeap/type.cmi pHeap/leftist.cmx pHeap/binomial.cmx
 	$(ocamlopt) -pack $^ -o $@
 
 clean:
