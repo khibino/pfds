@@ -1,9 +1,9 @@
-module Make(Ord : PElem.ORDERED) : Type.S =
+module Make(Ord : PElem.ORDERED) : Type.S with type elt = Ord.t =
 struct
 
-  type elem = Ord.t
+  type elt = Ord.t
 
-  type tree = E | T of (tree * elem * tree)
+  type tree = E | T of (tree * elt * tree)
   type set = tree
 
   let empty = E

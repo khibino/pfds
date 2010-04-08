@@ -1,10 +1,10 @@
-module Make(Ord : PElem.ORDERED) : Type.S =
+module Make(Ord : PElem.ORDERED) : Type.S with type elt = Ord.t =
 struct
 
-  type elem = Ord.t
+  type elt = Ord.t
 
   type color = R | B
-  type tree = E | T of (color * tree * elem * tree)
+  type tree = E | T of (color * tree * elt * tree)
 
   type set = tree
 

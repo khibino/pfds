@@ -22,10 +22,10 @@ pStack.cmo: pStack/type.cmi pStack/aList.cmo pStack/custom.cmo
 pStack.cmx: pStack/type.cmi pStack/aList.cmx pStack/custom.cmx
 	$(ocamlopt) -pack $^ -o $@
 
-pSet.cmo: pSet/type.cmi pSet/unbalanced.cmo pSet/redBlack.cmo
+pSet.cmo: pSet/type.cmi pSet/unbalanced.cmo pSet/redBlack.cmo pSet/test.cmo
 	$(ocamlc) -pack $^ -o $@
 
-pSet.cmx: pSet/type.cmi pSet/unbalanced.cmx pSet/redBlack.cmx
+pSet.cmx: pSet/type.cmi pSet/unbalanced.cmx pSet/redBlack.cmx pSet/test.cmx
 	$(ocamlopt) -pack $^ -o $@
 
 pHeap.cmo: pHeap/type.cmi pHeap/leftist.cmo pHeap/binomial.cmo

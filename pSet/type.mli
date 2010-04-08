@@ -1,8 +1,8 @@
 module type S =
 sig
-  type elem
+  type elt
   type set
   val empty : set
-  val member : elem -> set -> bool
-  val insert : elem -> set -> set
+  val member : elt -> set -> bool
+  val insert : elt -> set -> set
 end
