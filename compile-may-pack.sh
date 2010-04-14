@@ -14,14 +14,7 @@ EOF
 	exit 1
 fi
 
-module_path() {
-	dir_path="$1"
-	for dir in $(echo $dir_path | sed 's@/@ @g'); do
-		mod="$(echo $dir | sed 's@^\(.\).*$@\1@' | tr 'a-z' 'A-Z')${dir#?}"
-		mpath="${mpath}.${mod}"
-	done
-	echo ${mpath#.}
-}
+. ./sh-lib
 
 dir=$(dirname $source)
 if [ x"$dir" != x. ]; then

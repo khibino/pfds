@@ -22,10 +22,10 @@ pStack.cmo: pStack/type.cmi pStack/aList.cmo pStack/custom.cmo
 pStack.cmx: pStack/type.cmi pStack/aList.cmx pStack/custom.cmx
 	$(ocamlopt) -pack $^ -o $@
 
-pSet.cmo: pSet/type.cmi pSet/unbalanced.cmo pSet/redBlack.cmo pSet/test.cmo
+pSet.cmo: pSet/type.cmi pSet/unbalanced.cmo pSet/redBlack.cmo
 	$(ocamlc) -pack $^ -o $@
 
-pSet.cmx: pSet/type.cmi pSet/unbalanced.cmx pSet/redBlack.cmx pSet/test.cmx
+pSet.cmx: pSet/type.cmi pSet/unbalanced.cmx pSet/redBlack.cmx
 	$(ocamlopt) -pack $^ -o $@
 
 pHeap.cmo: pHeap/type.cmi pHeap/leftist.cmo pHeap/binomial.cmo
@@ -33,6 +33,21 @@ pHeap.cmo: pHeap/type.cmi pHeap/leftist.cmo pHeap/binomial.cmo
 
 pHeap.cmx: pHeap/type.cmi pHeap/leftist.cmx pHeap/binomial.cmx
 	$(ocamlopt) -pack $^ -o $@
+
+test: all
+	find utests -name '*.ml' | while read tml ; do \
+		top=$(shell pwd); \
+		dir=$$(dirname $$tml); \
+		name=$$(basename $$tml .ml); \
+		src=$${name}.ml; \
+		bobj=$${name}.cmo; \
+		(\
+		set -x ; \
+		cd $$dir && \
+		ocamlc -I $$top -c $$src && \
+		ocaml -I $$top pSet.cmo $$bobj \
+		); \
+	done
 
 clean:
 	$(RM) *.cmo *.cmx *.o
